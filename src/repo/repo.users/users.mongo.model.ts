@@ -5,7 +5,7 @@ const usersSchema = new Schema<UserStructure>({
   email:{
     type: String,
     required: true,
-    unique:  true
+    unique: true
   },
   passwd:{
     type: String,
@@ -15,7 +15,7 @@ const usersSchema = new Schema<UserStructure>({
     type: String,
     required: true,
   },
-  styleFood:String,
+  styleFood: String,
   descriptionUser: String
 })
 
