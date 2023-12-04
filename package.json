@@ -11,7 +11,7 @@
     "build:render": "tsc",
     "test": "jest --watchAll --coverage",
     "prepare": "husky install",
-    "test:prod": "jest --watchAll --watchAll=false --coverage --passWithNoTests"
+    "test:pro": "jest --watchAll --watchAll=false --coverage --passWithNoTests"
   },
   "keywords": [],
   "author": "Sergi Casiano",
