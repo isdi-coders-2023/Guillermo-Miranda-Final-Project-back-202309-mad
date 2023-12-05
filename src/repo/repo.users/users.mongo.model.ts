@@ -15,8 +15,14 @@ const usersSchema = new Schema<UserStructure>({
     type: String,
     required: true,
   },
-  styleFood: String,
-  descriptionUser: String
+  styleFood:{
+    type: String,
+    default: 'Indefinido',
+  },
+  descriptionUser:{
+    type: String,
+    default: 'Sin descripción'
+  }
 })
 
 usersSchema.set('toJSON', {
