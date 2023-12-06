@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { Request, Response, NextFunction } from 'express';
 import createDebug from 'debug';
-import { UserMongoRepo } from '../repo/repo.users/users.mongo.repo.js';
-// Import { Auth } from '../services/auth.js';
-// Import { Controller } from './controller.js';
+import { UsersMongoRepo } from '../repo/repo.users/users.mongo.repo.js';
+import { Auth } from '../services/auth.js';
+
 import { UserStructure } from '../entities/user.js';
 
 const debug = createDebug('FPB:users:controller')
@@ -11,7 +11,7 @@ const debug = createDebug('FPB:users:controller')
 
 export class UserController <UserStructure> {
 
-  constructor(protected repo: UserMongoRepo){
+  constructor(protected repo: UsersMongoRepo){
     debug('Instantiated')
   }
 
@@ -33,7 +33,7 @@ export class UserController <UserStructure> {
         ? await this.repo.getById(req.body.userid) 
         : await this.repo.login(req.body);
 
-    /* Const data = {
+    const data = {
         user: result,
         token: Auth.signJWT({ 
           id: result.id,
@@ -42,7 +42,7 @@ export class UserController <UserStructure> {
       };
       res.status(202);
       res.statusMessage = 'Accepted';
-      res.json(data); */
+      res.json(data); 
     } catch (error) {
       next(error);
     }

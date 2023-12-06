@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express'
 import morgan from 'morgan';
 import createDebug from 'debug';
-// Import { usersRouter } from './routers/user.router.js';
+import { usersRouter } from '../routers/users.route.js';
 
 const debug = createDebug('FPB:app');
 
@@ -16,4 +16,4 @@ app.use(express.json());
 app.use(express.static('public'));
 
 
-// App.use('/users', usersRouter); 
+app.use('/users', usersRouter); 
