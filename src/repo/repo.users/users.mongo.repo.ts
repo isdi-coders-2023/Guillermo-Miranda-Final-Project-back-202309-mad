@@ -1,5 +1,5 @@
 import { Repository } from "../repo.js";
-import { HttpError } from "../../services/http.error.js";
+import { HttpError } from "../../types/http.error.js";
 import { UsersModel } from "./users.mongo.model.js";
 import { LoginUser, UserStructure } from "../../entities/user.js";
 import createDebug from 'debug'
@@ -46,7 +46,7 @@ constructor(){
   async update(id: string, updatedItem: Partial<UserStructure>): Promise<UserStructure> {
 
     const result = await UsersModel.findByIdAndUpdate(id, updatedItem, {new : true}).exec();
-  if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
+    if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
     return result as UserStructure;
 
   }

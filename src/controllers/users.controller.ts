@@ -4,12 +4,12 @@ import createDebug from 'debug';
 import { UsersMongoRepo } from '../repo/repo.users/users.mongo.repo.js';
 import { Auth } from '../services/auth.js';
 
-import { UserStructure } from '../entities/user.js';
+
 
 const debug = createDebug('FPB:users:controller')
 
 
-export class UserController <UserStructure> {
+export class UserController {
 
   constructor(protected repo: UsersMongoRepo){
     debug('Instantiated')
@@ -25,13 +25,11 @@ export class UserController <UserStructure> {
     }
 
   }
-
+ 
   async login(req: Request, res: Response, next: NextFunction) {
 
     try {
-      const result = req.body.userid 
-        ? await this.repo.getById(req.body.userid) 
-        : await this.repo.login(req.body);
+      const result = await this.repo.login(req.body);
 
     const data = {
         user: result,

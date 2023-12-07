@@ -2,7 +2,7 @@ import { hash,compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config';
 import { UserStructure } from "../entities/user.js";
-import { HttpError } from "../services/http.error.js";
+import { HttpError } from "../types/http.error.js";
 import createDebug from 'debug'
 
 const debug = createDebug('W7E:auth');

@@ -1,6 +1,6 @@
 import createDebug from "debug";
 import { NextFunction, Request, Response } from "express";
-import { HttpError } from "../services/http.error.js";
+import { HttpError } from "../types/http.error.js";
 import { Auth } from "../services/auth.js";
 import { UsersMongoRepo } from "../repo/repo.users/users.mongo.repo.js";
 
