@@ -6,7 +6,7 @@ import { UsersMongoRepo } from "../repo/repo.users/users.mongo.repo.js";
 
 
 
-const debug = createDebug('W7E:auth:interceptor')
+const debug = createDebug('FPB:auth:interceptor')
 
 export class AuthInterceptor {
   constructor(){

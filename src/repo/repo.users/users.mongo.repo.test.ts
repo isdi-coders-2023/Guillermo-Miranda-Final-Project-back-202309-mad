@@ -43,6 +43,7 @@ describe('Given UsersMongoRepo', () => {
       const resultError = repoError.login({email: ''} as unknown as LoginUser);
       Auth.compare = jest.fn().mockReturnValue(false);
       expect(resultError).rejects.toThrow(mockError);
+
       
     });
 
