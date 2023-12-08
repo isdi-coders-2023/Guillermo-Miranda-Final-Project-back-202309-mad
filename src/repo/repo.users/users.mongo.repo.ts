@@ -13,7 +13,7 @@ constructor(){
 
   async create(newItem: Omit<UserStructure, "id">): Promise<UserStructure> {
 
-  newItem.passwd = await Auth.hash(newItem.passwd);
+    newItem.passwd = await Auth.hash(newItem.passwd);
     const result: UserStructure = await UsersModel.create(newItem);
     return result;
 
