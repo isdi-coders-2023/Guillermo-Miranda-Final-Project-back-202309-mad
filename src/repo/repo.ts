@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
-export interface Repository <X extends {id:unknown}> {
-  getAll():Promise<X[]>;
+  export interface Repository <X extends {id:unknown}> {
+  // getAll():Promise<X[]>;
+  getAllUsers(_page: string):Promise<X[]>;
   getById(_id: X['id']):Promise<X>;
   // Search({ key, value }: { key: keyof X; value: unknown }): Promise<X[]>;
   create(_newItem:Omit<X,'id'>):Promise<X>;

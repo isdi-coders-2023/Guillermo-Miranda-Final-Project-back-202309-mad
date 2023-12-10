@@ -13,7 +13,7 @@ const repo = new UsersMongoRepo();
 const controller = new UserController(repo);
 const interceptor = new AuthInterceptor();
 
-usersRouter.get('/', controller.getAll.bind(controller));
+usersRouter.get('/', controller.getAllUsers.bind(controller));
 
 usersRouter.post('/register', 
 // Validation interceptor,

@@ -15,10 +15,12 @@ export class UserController {
     debug('Instantiated')
   }
 
-  async getAll(_req: Request, res: Response, next: NextFunction) {
+  async getAllUsers(req: Request, res: Response, next: NextFunction) {
 
     try {
-      const result = await this.repo.getAll();
+      const result = await this.repo.getAllUsers(
+        req.params.page
+      );
       res.json(result);
     } catch (error) {
       next(error);

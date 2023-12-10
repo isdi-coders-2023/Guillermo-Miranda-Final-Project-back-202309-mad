@@ -31,7 +31,7 @@ describe('Given UsersController', () => {
       } as unknown as Response;
 
       const controller = new UserController(mockRepo);
-      await controller.getAll(mockRequest,mockResponse,mockNext);
+      await controller.getAllUsers(mockRequest,mockResponse,mockNext);
       expect(mockResponse.json).toHaveBeenCalled();
 
      
@@ -39,7 +39,7 @@ describe('Given UsersController', () => {
         getAll: jest.fn().mockRejectedValue(mockError)
       } as unknown as UsersMongoRepo;
       const controllerError = new UserController(mockRepoFail);
-      await controllerError.getAll(mockRequest,mockResponse,mockNext);
+      await controllerError.getAllUsers(mockRequest,mockResponse,mockNext);
       expect(mockNext).toHaveBeenCalledWith(mockError);
 
     });
