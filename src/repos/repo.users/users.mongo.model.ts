@@ -22,7 +22,13 @@ const usersSchema = new Schema<UserStructure>({
   descriptionUser:{
     type: String,
     default: 'Sin descripción'
-  }
+  },
+  myRecipes:[
+    {
+        type: Schema.Types.ObjectId,
+        ref: 'RecipeStructure',
+    }
+  ]
 })
 
 usersSchema.set('toJSON', {

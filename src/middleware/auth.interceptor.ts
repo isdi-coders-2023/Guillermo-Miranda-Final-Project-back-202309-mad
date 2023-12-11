@@ -2,6 +2,7 @@ import createDebug from "debug";
 import { NextFunction, Request, Response } from "express";
 import { HttpError } from "../types/http.error.js";
 import { Auth } from "../services/auth.js";
+import { RecipesMongoRepo } from "../repos/repo.recipes/recipes.mongo.repo.js";
 
 
 
@@ -22,6 +23,21 @@ export class AuthInterceptor {
           req.body.userid = tokenPayload.id;
           next();
       } catch(error){
+        next(error)
+      }
+    }
+
+    async authenticationRecipe (req: Request, res: Response, next: NextFunction){
+      try{ 
+          const userID = req.body.userId;
+        const recipeID = req.params.id
+
+        const repoRecipe = new RecipesMongoRepo(); 
+        const recipe = await repoRecipe.getById(recipeID) 
+        if(recipe.chef.id === userID) throw new HttpError(401, 'Unauthorized', 'User not valid') 
+
+        next();
+      }catch(error){
         next(error)
       }
     }

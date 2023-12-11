@@ -28,7 +28,7 @@ constructor(){
 
 }
  
-async getAllUsers(): Promise<UserStructure[]> { 
+async getAll(): Promise<UserStructure[]> { 
 
 
   const data = await UsersModel.find().exec();
@@ -51,6 +51,14 @@ async getAllUsers(): Promise<UserStructure[]> {
     if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
     return result as UserStructure;
 
+  }
+
+  async delete(id: string): Promise<void> { // Cambiar esto
+    const result = await UsersModel.findByIdAndDelete(id).exec();
+    
+    if (!result){
+      throw new HttpError(404, 'Not Found', 'Delete not possible');
+    }
   }
   
 }

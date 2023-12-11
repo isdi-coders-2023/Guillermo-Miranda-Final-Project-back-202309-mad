@@ -1,7 +1,11 @@
 import { recipeStructure } from "../../entities/recipes.js";
 import { Schema, model } from "mongoose";
 
-const recipesSchema = new Schema<recipeStructure>({
+const RecipesSchema = new Schema<recipeStructure>({
+  chef:{
+    type: Schema.Types.ObjectId,
+    ref: 'UserStructure',
+  },
   recipeName:{
     type: String,
     required: true,
@@ -25,7 +29,7 @@ const recipesSchema = new Schema<recipeStructure>({
   }
 })
 
-recipesSchema.set('toJSON', {
+RecipesSchema.set('toJSON', {
   transform(_document, returnedObject) {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
@@ -33,4 +37,4 @@ recipesSchema.set('toJSON', {
   },
 });
 
-export const UsersModel = model('Recipe', recipesSchema, 'recipes');
+export const RecipesModel = model('Recipe', RecipesSchema, 'recipes');

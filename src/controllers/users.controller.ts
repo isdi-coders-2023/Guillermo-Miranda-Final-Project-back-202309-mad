@@ -19,7 +19,7 @@ export class UserController {
   async getAllUsers(req: Request, res: Response, next: NextFunction) {
 
     try {
-      const result = await this.repo.getAllUsers();
+      const result = await this.repo.getAll();
       res.json(result);
     } catch (error) {
       next(error);
