@@ -2,9 +2,9 @@ export type recipeStructure = {
   
   id: string,
   recipeName:string, 
-  ingredients: string,
+  ingredients: string[],
   descriptionRecipe: string,
   cockingTime: number,
   // picture:
-  diets: 'omnivora' | 'flexitariana' | 'vegetariana' |'vegana' 
+  diets: 'Omnivora' | 'Flexitariana' | 'Vegetariana' |'Vegana' | 'Otros'
 }
