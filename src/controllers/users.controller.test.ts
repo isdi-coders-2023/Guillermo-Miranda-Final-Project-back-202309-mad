@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { UserController } from "./users.controller"
-import { UsersMongoRepo } from "../repo/repo.users/users.mongo.repo";
+import { UsersMongoRepo } from "../repos/repo.users/users.mongo.repo";
 import { UserStructure } from "../entities/user";
 import { get } from "mongoose";
 import { error } from "console";
@@ -23,7 +23,7 @@ describe('Given UsersController', () => {
       } as unknown as Request;
 
       const mockRepo = {
-        getAll: jest.fn().mockResolvedValue(mockRequest)
+        getAllUsers: jest.fn().mockResolvedValue(mockRequest)
       } as unknown as UsersMongoRepo; 
 
       mockResponse = {
@@ -36,7 +36,7 @@ describe('Given UsersController', () => {
 
      
       const mockRepoFail = {
-        getAll: jest.fn().mockRejectedValue(mockError)
+        getAllUsers: jest.fn().mockRejectedValue(mockError)
       } as unknown as UsersMongoRepo;
       const controllerError = new UserController(mockRepoFail);
       await controllerError.getAllUsers(mockRequest,mockResponse,mockNext);

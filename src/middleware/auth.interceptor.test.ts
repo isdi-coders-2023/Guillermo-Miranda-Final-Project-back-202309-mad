@@ -1,15 +1,12 @@
-import { Request, Response } from 'express';
-import { Auth } from '../services/auth';
-import { AuthInterceptor } from './auth.interceptor';
-import { UsersMongoRepo } from '../repo/repo.users/users.mongo.repo';
-import { HttpError } from '../types/http.error';
-import { Repository } from '../repo/repo'
-import { UserStructure } from '../entities/user';
+import { NextFunction, Request, Response } from 'express';
+import { Auth } from '../services/auth.js';
+import { AuthInterceptor } from './auth.interceptor.js';
+
 
 describe('Given the class AuthInterceptor', () => {
   const authInterceptor = new AuthInterceptor();
   const mockeResponse = {} as unknown as Response;
-  const mockNext = jest.fn();
+  const mockNext = jest.fn() as NextFunction;
   describe('When it is instantiated and...', () => {
 
     test('Then, when the method authorization is called', () => {
@@ -22,17 +19,7 @@ describe('Given the class AuthInterceptor', () => {
       expect(mockNext).toHaveBeenCalled();
     });
 
-    test('Then, when the method authenticationUser is called', () => {
-      const repo = new UsersMongoRepo();
-      const mockRequest = {
-        params:'',
-        body: {},
-      } as unknown as Request;
-      repo.getById = jest.fn().mockResolvedValue('');
-      authInterceptor.authenticationUser(mockRequest, mockeResponse, mockNext);
-      expect(mockNext).toHaveBeenCalled();
-      
-    });
+
 
   });
   describe('When there are errors', () => {
@@ -46,18 +33,6 @@ describe('Given the class AuthInterceptor', () => {
       expect(mockNext).toHaveBeenCalled();
     });
 
-    test('When there is no authorization',() => {
-      const repo = new UsersMongoRepo() as unknown as Repository<UserStructure> ;
-      const mockError = new HttpError(401, 'Unauthorized', 'User not valid');
-      const mockRequest = {
-        params:'',
-        body: {},
-      } as unknown as Request;
-      repo.getById('false');
-      authInterceptor.authenticationUser(mockRequest, mockeResponse, mockNext);
-      expect(repo.getById).rejects.toThrow(mockError);
-      expect(mockNext).toHaveBeenCalled();
-    });
 
   });
 });

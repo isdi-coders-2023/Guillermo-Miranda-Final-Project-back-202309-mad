@@ -2,7 +2,6 @@ import createDebug from "debug";
 import { NextFunction, Request, Response } from "express";
 import { HttpError } from "../types/http.error.js";
 import { Auth } from "../services/auth.js";
-import { UsersMongoRepo } from "../repo/repo.users/users.mongo.repo.js";
 
 
 
@@ -28,18 +27,18 @@ export class AuthInterceptor {
     }
   
 
-    async authenticationUser (req: Request, res: Response, next: NextFunction){
-    try{ 
-      const userID = req.body.userId; 
-      const userTargetID = req.params.id
+  //   async authenticationUser (req: Request, res: Response, next: NextFunction){
+  //   try{ 
+  //     const userID = req.body.userId; 
+  //     const userTargetID = req.params.id
 
-      const repoUser = new UsersMongoRepo(); 
-      const user = await repoUser.getById(userTargetID)
-      if(user !== userID) throw new HttpError(401, 'Unauthorized', 'User not valid')
+  //     const repoUser = new UsersMongoRepo(); 
+  //     const user = await repoUser.getById(userTargetID)
+  //     if(user !== userID) throw new HttpError(401, 'Unauthorized', 'User not valid')
 
-      next();
-    }catch(error){
-      next(error)
-    }
-  }
+  //     next();
+  //   }catch(error){
+  //     next(error)
+  //   }
+  // }
 }

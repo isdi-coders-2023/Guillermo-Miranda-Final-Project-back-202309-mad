@@ -28,13 +28,11 @@ constructor(){
 
 }
  
-async getAllUsers(page: string): Promise<UserStructure[]> { 
+async getAllUsers(): Promise<UserStructure[]> { 
 
-  const skp = (Number(page) - 1) * 3;
-  const data = await UsersModel.find()
-    .skip(skp)
-    .limit(3)
-    .exec();
+
+  const data = await UsersModel.find().exec();
+
   return data;
 
 }

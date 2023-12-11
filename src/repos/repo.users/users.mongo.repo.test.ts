@@ -52,7 +52,7 @@ describe('Given UsersMongoRepo', () => {
       const repo = new UsersMongoRepo();
       const exec = jest.fn().mockResolvedValue('test');
       UsersModel.find = jest.fn().mockReturnValue({exec});
-      const result = await repo.getAllUsers('1');
+      const result = await repo.getAllUsers();
       expect(UsersModel.find).toHaveBeenCalled();
       expect(result).toBe('test');
 

@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { Request, Response, NextFunction } from 'express';
 import createDebug from 'debug';
-import { UsersMongoRepo } from '../repo/repo.users/users.mongo.repo.js';
+import { UsersMongoRepo } from '../repos/repo.users/users.mongo.repo.js';
 import { Auth } from '../services/auth.js';
+import { loginResponse } from '../types/login.response.js';
 
 
 
@@ -18,9 +19,7 @@ export class UserController {
   async getAllUsers(req: Request, res: Response, next: NextFunction) {
 
     try {
-      const result = await this.repo.getAllUsers(
-        req.params.page
-      );
+      const result = await this.repo.getAllUsers();
       res.json(result);
     } catch (error) {
       next(error);
@@ -33,7 +32,7 @@ export class UserController {
     try {
       const result = await this.repo.login(req.body);
 
-    const data = {
+    const data: loginResponse = {
         user: result,
         token: Auth.signJWT({ 
           id: result.id,

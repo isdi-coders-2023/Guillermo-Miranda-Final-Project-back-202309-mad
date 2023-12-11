@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express'
 import morgan from 'morgan';
 import createDebug from 'debug';
-import { usersRouter } from '../routers/users.route.js';
+import { usersRouter } from '../routers/users.router.js';
 
 const debug = createDebug('FPB:app');
 
