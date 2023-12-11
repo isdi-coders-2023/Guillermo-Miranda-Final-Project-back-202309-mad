@@ -5,4 +5,12 @@ export default {
   testEnvironment: 'node',
   testPathIgnorePatterns: ['dist'],
   resolver: 'jest-ts-webcompat-resolver',
+  coveragePathIgnorePatterns: [
+    'src/server/app.ts',
+    'src/server/index.ts',
+    'src/entities/*.ts',
+    'src/types/*.ts',
+    'src/repos/repo.users/users.mongo.model.ts',
+    'src/routers/users.router.ts',
+  ],
 };
