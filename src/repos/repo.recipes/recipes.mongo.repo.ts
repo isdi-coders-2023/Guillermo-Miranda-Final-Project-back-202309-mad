@@ -16,11 +16,10 @@ constructor(){
   async create(newItem: Omit<recipeStructure, "id">): Promise<recipeStructure> {
 
     const userID = newItem.chef.id;
-    const user = await this.userRepo.getById(userID); 
-    const result: recipeStructure = await RecipesModel.create({...newItem, chef:userID});
+    const user = await this.userRepo.getById(userID);
+    const result: recipeStructure = await RecipesModel.create({...newItem, chef: userID});
     user.myRecipes.push(result);
     await this.userRepo.update(userID, user);
-
     return result;
   
   }
@@ -28,7 +27,7 @@ constructor(){
   async getAll(): Promise<recipeStructure[]> { 
 
     const data = await RecipesModel.find()
-    .populate('cooker', {
+    .populate('chef', {
       myRecipes: 0,
     }).exec();
 
@@ -39,7 +38,7 @@ constructor(){
   async getById(id: string): Promise<recipeStructure> {
     
     const result = await RecipesModel.findById(id)
-    .populate('cooker', {
+    .populate('chef', {
       myRecipes: 0,
     }).exec();
     if (!result) throw new HttpError(404, 'Not Found', 'GetById not possible');
@@ -50,7 +49,7 @@ constructor(){
   async update(id: string, updatedItem: Partial<recipeStructure>): Promise<recipeStructure> {
 
     const result = await RecipesModel.findByIdAndUpdate(id, updatedItem, {new : true})
-    .populate('cooker', {
+    .populate('chef', {
       myRecipes: 0,
     }).exec();
     if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
@@ -60,7 +59,7 @@ constructor(){
 
   async delete(id: string): Promise<void> { // Cambiar esto
     const result = await RecipesModel.findByIdAndDelete(id)
-    .populate('cooker', {
+    .populate('chef', {
       myRecipes: 0,
     }).exec();
     if (!result){

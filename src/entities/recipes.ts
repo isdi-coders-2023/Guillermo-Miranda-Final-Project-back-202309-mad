@@ -1,3 +1,4 @@
+import { ImgData } from "../types/img.data"
 import { UserStructure } from "./user"
 
 export type recipeStructure = {
@@ -8,6 +9,6 @@ export type recipeStructure = {
   ingredients: string[],
   descriptionRecipe: string,
   cockingTime: number,
-  // picture:
+  picture: ImgData,
   diets: 'Omnivora' | 'Flexitariana' | 'Vegetariana' |'Vegana' | 'Otros'
 }

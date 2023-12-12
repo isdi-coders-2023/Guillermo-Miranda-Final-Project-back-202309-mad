@@ -29,7 +29,7 @@ export class AuthInterceptor {
 
     async authenticationRecipe (req: Request, res: Response, next: NextFunction){
       try{ 
-          const userID = req.body.userId;
+        const userID = req.body.userId;
         const recipeID = req.params.id
 
         const repoRecipe = new RecipesMongoRepo(); 

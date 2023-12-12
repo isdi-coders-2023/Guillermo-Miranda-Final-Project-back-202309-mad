@@ -26,7 +26,7 @@ const usersSchema = new Schema<UserStructure>({
   myRecipes:[
     {
         type: Schema.Types.ObjectId,
-        ref: 'RecipeStructure',
+        ref: 'Recipe',
     }
   ]
 })

@@ -13,7 +13,6 @@ export type UserStructure = LoginUser & {
   userName:string, 
   styleFood: string,
   descriptionUser: string,
-  myRecipes: recipeStructure[],
-  // Avatar: imgData,
+  myRecipes: recipeStructure[]
 
 }

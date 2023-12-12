@@ -4,12 +4,11 @@ import { Schema, model } from "mongoose";
 const RecipesSchema = new Schema<recipeStructure>({
   chef:{
     type: Schema.Types.ObjectId,
-    ref: 'UserStructure',
+    ref: 'User',
   },
   recipeName:{
     type: String,
     required: true,
-    unique: true
   },
   ingredients:{
     type: [],
@@ -22,6 +21,15 @@ const RecipesSchema = new Schema<recipeStructure>({
   cockingTime:{
     type: Number,
     default: 0,
+  },
+  picture: {
+    publicId: String,
+    size: Number,
+    width: Number,
+    height: Number,
+    format: String,
+    url: String,
+    cloudinaryURL: String,
   },
   diets:{
     type: String,

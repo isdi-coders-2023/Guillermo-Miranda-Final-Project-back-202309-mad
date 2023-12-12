@@ -26,6 +26,17 @@ export class UserController {
     }
 
   }
+
+  async getById(req: Request, res: Response, next: NextFunction){
+
+    try {
+      const result = await this.repo.getById(req.params.id);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+
+  }
  
   async login(req: Request, res: Response, next: NextFunction) {
 
@@ -60,6 +71,8 @@ export class UserController {
     }
 
   }
+
+
 
   async update(req: Request, res: Response, next: NextFunction) {
 

@@ -14,6 +14,7 @@ const controller = new UserController(repo);
 // const interceptor = new AuthInterceptor();
 
 usersRouter.get('/', controller.getAllUsers.bind(controller));
+usersRouter.get('/:id', controller.getById.bind(controller));
 
 usersRouter.post('/register', 
 // Validation interceptor,
