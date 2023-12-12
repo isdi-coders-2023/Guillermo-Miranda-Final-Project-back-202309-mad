@@ -28,14 +28,14 @@ recipesRouter.post('/create',
 recipesRouter.get('/:id', controller.getById.bind(controller));
 
   recipesRouter.patch(
-  '/:id', 
+  '/update/:id', 
   interceptor.authorization.bind(interceptor),
-  // interceptor.authenticationRecipe.bind(interceptor),
+  interceptor.authenticationRecipe.bind(interceptor),
   controller.update.bind(controller)
   );
 
   recipesRouter.delete(
-  '/update/:id', 
+  '/delete/:id', 
   interceptor.authorization.bind(interceptor),
   interceptor.authenticationRecipe.bind(interceptor),
   controller.delete.bind(controller)

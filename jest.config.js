@@ -11,6 +11,8 @@ export default {
     'src/entities/*.ts',
     'src/types/*.ts',
     'src/repos/repo.users/users.mongo.model.ts',
+    'src/repos/repo.recipes/recipes.mongo.model.ts',
     'src/routers/users.router.ts',
+    'src/routers/recipes.router.ts'
   ],
 };

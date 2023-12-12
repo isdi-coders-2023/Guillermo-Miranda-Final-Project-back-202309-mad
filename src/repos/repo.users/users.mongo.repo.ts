@@ -30,9 +30,7 @@ constructor(){
  
 async getAll(): Promise<UserStructure[]> { 
 
-
   const data = await UsersModel.find().exec();
-
   return data;
 
 }
@@ -53,7 +51,7 @@ async getAll(): Promise<UserStructure[]> {
 
   }
 
-  async delete(id: string): Promise<void> { // Cambiar esto
+  async delete(id: string): Promise<void> { 
     const result = await UsersModel.findByIdAndDelete(id).exec();
     
     if (!result){
