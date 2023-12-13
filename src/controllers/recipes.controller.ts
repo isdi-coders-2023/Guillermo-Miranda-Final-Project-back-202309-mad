@@ -68,6 +68,7 @@ export class RecipesController {
   async update(req: Request, res: Response, next: NextFunction) {
 
     try {
+    console.log(req.body, 'fdhsgnsn')
       const result = await this.repo.update(req.params.id, req.body);
       res.status(200);
       res.statusMessage = 'Updated';
@@ -88,5 +89,4 @@ export class RecipesController {
       next(error);
     }
   }
-
 }

@@ -5,6 +5,7 @@ import { recipeStructure } from "../../entities/recipes.js";
 import createDebug from 'debug'
 import { UsersMongoRepo } from "../repo.users/users.mongo.repo.js";
 
+
 const debug = createDebug('FPB:recipes:mongo:repo')
 export class RecipesMongoRepo implements Repository<recipeStructure>{
   userRepo: UsersMongoRepo;
@@ -36,7 +37,7 @@ constructor(){
   }
 
   async getById(id: string): Promise<recipeStructure> {
-    
+    console.log(id)
     const result = await RecipesModel.findById(id)
     .populate('chef', {
       myRecipes: 0,
@@ -47,7 +48,6 @@ constructor(){
   }
   
   async update(id: string, updatedItem: Partial<recipeStructure>): Promise<recipeStructure> {
-
     const result = await RecipesModel.findByIdAndUpdate(id, updatedItem, {new : true})
     .populate('chef', {
       myRecipes: 0,
@@ -57,7 +57,7 @@ constructor(){
 
   }
 
-  async delete(id: string): Promise<void> { // Cambiar esto
+  async delete(id: string): Promise<void> {
     const result = await RecipesModel.findByIdAndDelete(id)
     .populate('chef', {
       myRecipes: 0,
@@ -66,5 +66,4 @@ constructor(){
       throw new HttpError(404, 'Not Found', 'Delete not possible');
     }
   }
-  
 }

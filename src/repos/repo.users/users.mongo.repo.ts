@@ -57,6 +57,5 @@ async getAll(): Promise<UserStructure[]> {
     if (!result){
       throw new HttpError(404, 'Not Found', 'Delete not possible');
     }
-  }
-  
+  }  
 }

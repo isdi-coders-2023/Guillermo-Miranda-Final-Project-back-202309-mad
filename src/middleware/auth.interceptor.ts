@@ -30,10 +30,8 @@ export class AuthInterceptor {
 
     async authenticationRecipe (req: Request, res: Response, next: NextFunction){
       try{ 
-        
-        const userID = req.body.userid;
+        const userID: string = req.body.userid;
         const recipeID = req.params.id
-        debug('Instantiated',userID);
         const repoRecipe = new RecipesMongoRepo(); 
         const recipe = await repoRecipe.getById(recipeID) 
         if(recipe.chef.id !== userID) throw new HttpError(401, 'Unauthorized', 'User not valid') 
