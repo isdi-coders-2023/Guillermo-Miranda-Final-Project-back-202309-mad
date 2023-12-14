@@ -44,7 +44,6 @@ async getAll(): Promise<UserStructure[]> {
   }
   
   async update(id: string, updatedItem: Partial<UserStructure>): Promise<UserStructure> {
-
     const result = await UsersModel.findByIdAndUpdate(id, updatedItem, {new : true}).exec();
     if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
     return result as UserStructure;

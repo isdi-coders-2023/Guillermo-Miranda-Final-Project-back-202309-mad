@@ -39,7 +39,6 @@ constructor(){
   }
 
   async getById(id: string): Promise<recipeStructure> {
-    console.log(id)
     const result = await RecipesModel.findById(id)
     .populate('chef', {
       myRecipes: 0,

@@ -28,7 +28,7 @@ export class FileInterceptor {
       debug('previousBody:', previousBody);
       middleware(req, res, next);
       debug('multer-body:', req.body);
-      req.body = { ...previousBody, ...req.body };
+      req.body = { ...previousBody, ...req.body};
       debug('final-body:', req.body);
     };
   }

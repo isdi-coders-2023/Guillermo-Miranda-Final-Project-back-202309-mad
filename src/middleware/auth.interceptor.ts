@@ -15,6 +15,7 @@ export class AuthInterceptor {
   }
 
     authorization(req: Request, res: Response, next: NextFunction ){
+    
       try{ 
         const tokenHeader = req.get('Authorization');
         if(!tokenHeader?.startsWith('Bearer')) 

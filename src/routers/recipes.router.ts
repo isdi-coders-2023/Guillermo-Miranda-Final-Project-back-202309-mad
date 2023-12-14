@@ -20,21 +20,21 @@ recipesRouter.get('/', controller.getAll.bind(controller));
 recipesRouter.post('/create', 
 // Validation interceptor,
   interceptor.authorization.bind(interceptor),
-  // interceptor.authenticationRecipe.bind(interceptor),
   fileInterceptor.singleFileStore('picture').bind(fileInterceptor),
   controller.create.bind(controller)
 );
 
 recipesRouter.get('/:id', controller.getById.bind(controller));
 
-  recipesRouter.patch(
+recipesRouter.patch(
   '/update/:id', 
   interceptor.authorization.bind(interceptor),
   interceptor.authenticationRecipe.bind(interceptor),
+  fileInterceptor.singleFileStore('picture').bind(fileInterceptor),
   controller.update.bind(controller)
-  );
+);
 
-  recipesRouter.delete(
+recipesRouter.delete(
   '/delete/:id', 
   interceptor.authorization.bind(interceptor),
   interceptor.authenticationRecipe.bind(interceptor),
