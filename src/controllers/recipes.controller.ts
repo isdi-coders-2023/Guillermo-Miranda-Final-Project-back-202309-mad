@@ -42,13 +42,13 @@ export class RecipesController {
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
+   
     try {
       req.body.chef = { id: req.body.userid};
       if (!req.file)
         throw new HttpError(406, 'Not Acceptable', 'Invalid multer file');
       const imgData = await this.cloudinaryService.uploadImage(req.file.path);
-
-      req.body.image = {
+      req.body.picture = {
         publicId: req.file?.filename,
         format: req.file?.mimetype,
         url: req.file?.path,
@@ -57,6 +57,7 @@ export class RecipesController {
       };
       
       const result = await this.repo.create(req.body);
+    
       res.status(201);
       res.statusMessage = 'Created';
       res.json(result);
@@ -68,7 +69,7 @@ export class RecipesController {
   async update(req: Request, res: Response, next: NextFunction) {
 
     try {
-    console.log(req.body, 'fdhsgnsn')
+    
       const result = await this.repo.update(req.params.id, req.body);
       res.status(200);
       res.statusMessage = 'Updated';

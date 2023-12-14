@@ -15,10 +15,12 @@ constructor(){
 }
 
   async create(newItem: Omit<recipeStructure, "id">): Promise<recipeStructure> {
-
+    
     const userID = newItem.chef.id;
     const user = await this.userRepo.getById(userID);
+   
     const result: recipeStructure = await RecipesModel.create({...newItem, chef: userID});
+    
     user.myRecipes.push(result);
     await this.userRepo.update(userID, user);
     return result;

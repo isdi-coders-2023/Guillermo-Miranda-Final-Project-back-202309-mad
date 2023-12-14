@@ -17,6 +17,7 @@ export class CloudinaryMediaFiles {
   }
 
   async uploadImage (imagePath: string) {
+   
     try {
       const uploadApiResponse = await cloudinary.uploader.upload(imagePath, {
 
@@ -34,7 +35,7 @@ export class CloudinaryMediaFiles {
         height: uploadApiResponse.height,
         format: uploadApiResponse.format,
       };
-
+     
       return imgData;
     } catch (err) {
       const error = (err as { error: Error }).error as Error;
