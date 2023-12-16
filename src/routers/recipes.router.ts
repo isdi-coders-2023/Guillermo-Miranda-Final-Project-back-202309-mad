@@ -24,7 +24,13 @@ recipesRouter.post('/create',
   controller.create.bind(controller)
 );
 
+recipesRouter.get('/my-recipes/:userID', 
+  // interceptor.authorization.bind(interceptor),
+  controller.getUserRecipes.bind(controller)
+);
+
 recipesRouter.get('/:id', controller.getById.bind(controller));
+
 
 recipesRouter.patch(
   '/update/:id', 

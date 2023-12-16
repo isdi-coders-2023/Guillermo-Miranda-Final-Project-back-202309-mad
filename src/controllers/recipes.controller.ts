@@ -29,6 +29,19 @@ export class RecipesController {
 
   }
 
+  async getUserRecipes(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!req.params) throw new HttpError(400, 'Bad Request');
+      const result = await this.repo.getByIdMyRecipes(req.params.userID);
+      res.status(200);
+      res.statusMessage = 'Accepted';
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+
+  }
+
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
       if (!req.params.id) throw new HttpError(400, 'Bad Request');
@@ -72,8 +85,8 @@ export class RecipesController {
     req.body.chef = req.body.userId;
 
       if (req.file) {
-       const imagData = await this.cloudinaryService.uploadImage(req.file.path);
-      req.body.picture = imagData;
+        const imagData = await this.cloudinaryService.uploadImage(req.file.path);
+        req.body.picture = imagData;
       }
 
       const result = await this.repo.update(req.params.id, req.body);
