@@ -55,6 +55,7 @@ export class RecipesController {
   }
 
   async create(req: Request, res: Response, next: NextFunction) {
+   
     try {
       req.body.chef = { id: req.body.userid};
       if (!req.file)
@@ -69,7 +70,7 @@ export class RecipesController {
       };
       
       const result = await this.repo.create(req.body);
-    
+      debug('iooooo', result)
       res.status(201);
       res.statusMessage = 'Created';
       res.json(result);
@@ -85,11 +86,13 @@ export class RecipesController {
     req.body.chef = req.body.userId;
 
       if (req.file) {
-        const imagData = await this.cloudinaryService.uploadImage(req.file.path);
-        req.body.picture = imagData;
+        const imgData = await this.cloudinaryService.uploadImage(req.file.path);
+        req.body.picture = imgData;
+        imgData.cloudinaryURL = imgData.url;
       }
 
       const result = await this.repo.update(req.params.id, req.body);
+      
       res.status(200);
       res.statusMessage = 'Updated';
       res.json(result);
