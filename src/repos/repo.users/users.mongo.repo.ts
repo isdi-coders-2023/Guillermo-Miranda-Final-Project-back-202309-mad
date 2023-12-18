@@ -21,7 +21,7 @@ constructor(){
 
   async login (loginUser: LoginUser): Promise<UserStructure> {
 
-    const results = await UsersModel.findOne({email: loginUser.email}).populate('myRecipes').exec(); 
+    const results = await UsersModel.findOne({email: loginUser.email}).exec(); 
     if(!results ||  !(await Auth.compare(loginUser.passwd, results.passwd ))) 
     throw new HttpError(401, 'Unauthorized'); 
     return results as UserStructure;

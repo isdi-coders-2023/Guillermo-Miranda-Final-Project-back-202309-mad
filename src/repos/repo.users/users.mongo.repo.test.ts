@@ -96,5 +96,24 @@ describe('Given UsersMongoRepo', () => {
 
     });
 
+    test('then delete should be called...',async ()=>{
+
+      const repo = new UsersMongoRepo();
+      let exec = jest.fn().mockResolvedValue(null);
+      UsersModel.findByIdAndDelete= jest.fn().mockReturnValue({exec});
+      const result = await repo.delete('id');
+      expect(UsersModel.findByIdAndDelete).toHaveBeenCalled();
+      expect(result).toBe(null);
+
+      const repoError = new UsersMongoRepo();
+      const mockError = new HttpError(404, 'Not Found', 'GetById not possible');
+      exec = jest.fn().mockResolvedValue(null);
+      UsersModel.findByIdAndDelete = jest.fn().mockReturnValue({exec});
+      const resultError = repoError.delete('id');
+      Auth.compare = jest.fn().mockReturnValue(false);
+      expect(resultError).rejects.toThrow(mockError);
+
+    });
+
   })
 })
