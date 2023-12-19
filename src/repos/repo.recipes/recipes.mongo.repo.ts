@@ -24,6 +24,7 @@ export class RecipesMongoRepo implements Repository<recipeStructure>{
     const result: recipeStructure = await RecipesModel.create({...newItem, chef: userID});
     
     user.myRecipes.push(result);
+    console.log(user.myRecipes)
     await this.userRepo.update(userID, user);
     return result;
   

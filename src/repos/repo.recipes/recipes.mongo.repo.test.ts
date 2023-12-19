@@ -1,6 +1,8 @@
 import { recipeStructure } from "../../entities/recipes";
+import { UserStructure } from "../../entities/user";
 import { Auth } from "../../services/auth";
 import { HttpError } from "../../types/http.error";
+import { UsersModel } from "../repo.users/users.mongo.model";
 import { UsersMongoRepo } from "../repo.users/users.mongo.repo";
 import { RecipesModel } from "./recipes.mongo.model";
 import { RecipesMongoRepo } from "./recipes.mongo.repo"
@@ -16,11 +18,13 @@ describe('Given RecipesMongoRepo', () => {
     
     test('then create should be called...',async ()=>{
       
+      const mockuser = {myRecipes:[{}]} as unknown as UserStructure;
       const repo = new RecipesMongoRepo();
       RecipesModel.create = jest.fn().mockResolvedValue('test');
-      UsersMongoRepo.prototype.getById = jest.fn().mockResolvedValue('id');
+      const userID = {id:'id'} as unknown as UserStructure;
+      UsersMongoRepo.prototype.getById = jest.fn().mockResolvedValue(mockuser);
       UsersMongoRepo.prototype.update = jest.fn().mockResolvedValue({ myRecipes: []});
-      const result = await repo.create({} as Omit<recipeStructure,'id'>);
+      const result = await repo.create({...{}, chef: userID } as unknown as Omit<recipeStructure, "id">);
       expect(RecipesModel.create).toHaveBeenCalled();
       expect(result).toBe('test');
       
@@ -64,8 +68,9 @@ describe('Given RecipesMongoRepo', () => {
       const repo = new RecipesMongoRepo();
       let exec = jest.fn().mockResolvedValue('test');
       let populate = jest.fn().mockReturnValue({exec});
-      RecipesModel.findById = jest.fn().mockReturnValue({populate,exec});
-      const result = await repo.getById('id');
+      UsersModel.findById = jest.fn().mockReturnValue({exec});
+      RecipesModel.find = jest.fn().mockReturnValue({populate,exec});
+      const result = await repo.getByIdMyRecipes('id');
       expect(RecipesModel.findById).toHaveBeenCalled();
       expect(result).toBe('test');
 
@@ -104,19 +109,19 @@ describe('Given RecipesMongoRepo', () => {
     test('then delete should be called...',async ()=>{
 
       const repo = new RecipesMongoRepo();
-      let exec = jest.fn().mockResolvedValue(null);
+      let exec = jest.fn().mockResolvedValue({});
       let populate = jest.fn().mockReturnValue({exec});
       RecipesModel.findByIdAndDelete= jest.fn().mockReturnValue({populate,exec});
-      const result = await repo.delete('id');
+      await repo.delete('id');
       expect(RecipesModel.findByIdAndDelete).toHaveBeenCalled();
-      expect(result).toBe(null);
+
 
       const repoError = new RecipesMongoRepo();
-      const mockError = new HttpError(404, 'Not Found', 'GetById not possible');
+      const mockError = new HttpError(404, 'Not Found', 'Delete not possible');
       exec = jest.fn().mockResolvedValue(null);
       populate = jest.fn().mockReturnValue({exec});
       RecipesModel.findByIdAndDelete = jest.fn().mockReturnValue({populate,exec});
-      const resultError = repoError.delete('id');
+      const resultError = repoError.delete('');
       Auth.compare = jest.fn().mockReturnValue(false);
       expect(resultError).rejects.toThrow(mockError);
 

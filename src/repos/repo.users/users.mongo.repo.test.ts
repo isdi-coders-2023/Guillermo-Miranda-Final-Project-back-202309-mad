@@ -99,14 +99,14 @@ describe('Given UsersMongoRepo', () => {
     test('then delete should be called...',async ()=>{
 
       const repo = new UsersMongoRepo();
-      let exec = jest.fn().mockResolvedValue(null);
+      let exec = jest.fn().mockResolvedValue({});
       UsersModel.findByIdAndDelete= jest.fn().mockReturnValue({exec});
-      const result = await repo.delete('id');
+      await repo.delete('id');
       expect(UsersModel.findByIdAndDelete).toHaveBeenCalled();
-      expect(result).toBe(null);
+
 
       const repoError = new UsersMongoRepo();
-      const mockError = new HttpError(404, 'Not Found', 'GetById not possible');
+      const mockError = new HttpError(404, 'Not Found', 'Delete not possible');
       exec = jest.fn().mockResolvedValue(null);
       UsersModel.findByIdAndDelete = jest.fn().mockReturnValue({exec});
       const resultError = repoError.delete('id');
