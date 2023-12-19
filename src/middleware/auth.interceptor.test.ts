@@ -73,63 +73,67 @@ describe('Given the class AuthInterceptor', () => {
       expect(mockNext).toHaveBeenCalled();
     });
 
-    test('When there is no authenticationRecipes', async() => {
+    describe('When there are errors in authenticationRecipe', () => {
 
       const mockRequest = {
         body: {userId: 'userId'},
         params: { id: 'recipeId' }
       } as unknown as Request;
-      const mockRecipe =  mockRequest.params;
-      const mockRepo = { getById: jest.fn().mockResolvedValue(mockRecipe) };
 
-      jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
-      await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
-      expect(mockRepo.getById).toHaveBeenCalledWith('recipeId');;
-      expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
+      test('When there is no authenticationRecipes', async() => {
 
+        const mockRecipe =  mockRequest.params;
+        const mockRepo = { getById: jest.fn().mockResolvedValue(mockRecipe) };
+
+        jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
+
+        await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
+        expect(mockRepo.getById).toHaveBeenCalledWith('recipeId');;
+        expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
+
+      });
+
+      test('Then should call next with an HttpError when there is an error fetching the recipe', async () => {      
+
+        const mockRepo = { getById: jest.fn().mockRejectedValue(new HttpError(500, 'Database error')) };
+
+        jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
+
+        await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
+        expect(mockRepo.getById).toHaveBeenCalledWith('recipeId');
+        expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
+      });
     });
-
-    test('Then should call next with an HttpError when there is an error fetching the recipe', async () => {      const mockRequest = {
-      body: {userId: 'userId'},
-      params: { id: 'recipeId' }
-    } as unknown as Request;
-      const mockRepo = { getById: jest.fn().mockRejectedValue(new HttpError(500, 'Database error')) };
-
-      jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
-
-      await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
-
-      expect(mockRepo.getById).toHaveBeenCalledWith('recipeId');
-      expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
-    });
-
-    test('When there is no authenticationUser', async() => {
+    describe('When there are errors in authenticationUser', () => {
 
       const mockRequest = {
         body: {userId: 'userId'},
         params: { id: 'sameId' }
       } as unknown as Request;
-      const mockUser = { id: mockRequest.body };
-      const mockRepo = { getById: jest.fn().mockResolvedValue(mockUser) };
- 
-      jest.spyOn(UsersMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
-      await authInterceptor.authenticationUser(mockRequest, mockResponse, mockNext);
-      expect(mockRepo.getById).toHaveBeenCalledWith('sameId')
-      expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
-    });
 
-    test('Then should call next with an HttpError when there is an error fetching the recipe', async () => {      const mockRequest = {
-      body: {userId: 'userId'},
-      params: { id: 'sameId' }
-    } as unknown as Request;
-      const mockRepo = { getById: jest.fn().mockRejectedValue(new HttpError(500, 'Database error')) };
 
-      jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
+      test('When there is no authenticationUser', async() => {
 
-      await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
+        const mockUser = { id: mockRequest.body };
+        const mockRepo = { getById: jest.fn().mockResolvedValue(mockUser) };
+  
+        jest.spyOn(UsersMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
+        await authInterceptor.authenticationUser(mockRequest, mockResponse, mockNext);
+        expect(mockRepo.getById).toHaveBeenCalledWith('sameId')
+        expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
+      });
 
-      expect(mockRepo.getById).toHaveBeenCalledWith('sameId');
-      expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
+      test('Then should call next with an HttpError when there is an error fetching the user', async () => {      
+
+        const mockRepo = { getById: jest.fn().mockRejectedValue(new HttpError(500, 'Database error')) };
+
+        jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
+
+        await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
+
+        expect(mockRepo.getById).toHaveBeenCalledWith('sameId');
+        expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
+      });
     });
   });
 });

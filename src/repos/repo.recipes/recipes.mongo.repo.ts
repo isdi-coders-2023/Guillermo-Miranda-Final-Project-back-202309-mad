@@ -24,7 +24,6 @@ export class RecipesMongoRepo implements Repository<recipeStructure>{
     const result: recipeStructure = await RecipesModel.create({...newItem, chef: userID});
     
     user.myRecipes.push(result);
-    console.log(user.myRecipes)
     await this.userRepo.update(userID, user);
     return result;
   
@@ -53,11 +52,11 @@ export class RecipesMongoRepo implements Repository<recipeStructure>{
 
   async getByIdMyRecipes(userID: string): Promise<recipeStructure[]> {
     const user = await UsersModel.findById(userID).exec()
-    if (!user) throw new HttpError(404, 'Not Found', 'GetById not possible');
+    if (!user) throw new HttpError(404, 'Not Found', 'GetByIdMyRecipes not possible');
     const result = await RecipesModel.find({ _id: { $in: user.myRecipes } }).populate('chef', {
       myRecipes: 0,
     }).exec();
-    if (!result) throw new HttpError(404, 'Not Found', 'GetById not possible');
+    if (!result) throw new HttpError(404, 'Not Found', 'GetByIdMyRecipes not possible');
     return result as recipeStructure[]
 
   }
