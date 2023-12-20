@@ -52,7 +52,7 @@ describe('Given UsersMongoRepo', () => {
       const repo = new UsersMongoRepo();
       const exec = jest.fn().mockResolvedValue('test');
       UsersModel.find = jest.fn().mockReturnValue({exec});
-      const result = await repo.getAllUsers();
+      const result = await repo.getAll();
       expect(UsersModel.find).toHaveBeenCalled();
       expect(result).toBe('test');
 
@@ -91,6 +91,25 @@ describe('Given UsersMongoRepo', () => {
       exec = jest.fn().mockResolvedValue(null);
       UsersModel.findByIdAndUpdate = jest.fn().mockReturnValue({exec});
       const resultError = repoError.update('id',{});
+      Auth.compare = jest.fn().mockReturnValue(false);
+      expect(resultError).rejects.toThrow(mockError);
+
+    });
+
+    test('then delete should be called...',async ()=>{
+
+      const repo = new UsersMongoRepo();
+      let exec = jest.fn().mockResolvedValue({});
+      UsersModel.findByIdAndDelete= jest.fn().mockReturnValue({exec});
+      await repo.delete('id');
+      expect(UsersModel.findByIdAndDelete).toHaveBeenCalled();
+
+
+      const repoError = new UsersMongoRepo();
+      const mockError = new HttpError(404, 'Not Found', 'Delete not possible');
+      exec = jest.fn().mockResolvedValue(null);
+      UsersModel.findByIdAndDelete = jest.fn().mockReturnValue({exec});
+      const resultError = repoError.delete('id');
       Auth.compare = jest.fn().mockReturnValue(false);
       expect(resultError).rejects.toThrow(mockError);
 

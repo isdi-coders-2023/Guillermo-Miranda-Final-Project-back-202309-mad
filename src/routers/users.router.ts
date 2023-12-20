@@ -2,7 +2,8 @@ import { Router as createRouter } from 'express';
 import { UserController } from '../controllers/users.controller.js';
 import createDebug from 'debug';
 import { UsersMongoRepo } from '../repos/repo.users/users.mongo.repo.js';
-// import { AuthInterceptor } from '../middleware/auth.interceptor.js';
+import { AuthInterceptor } from '../middleware/auth.interceptor.js';
+
 
 const debug = createDebug('FPB:users:router');
 
@@ -11,9 +12,10 @@ debug('Starting');
 
 const repo = new UsersMongoRepo();
 const controller = new UserController(repo);
-// const interceptor = new AuthInterceptor();
+const interceptor = new AuthInterceptor();
 
 usersRouter.get('/', controller.getAllUsers.bind(controller));
+usersRouter.get('/:id', controller.getById.bind(controller));
 
 usersRouter.post('/register', 
 // Validation interceptor,
@@ -22,9 +24,9 @@ usersRouter.post('/register',
 
 usersRouter.post('/login', controller.login.bind(controller));
 
-// usersRouter.patch(
-//   '/update/:id', 
-//   interceptor.authorization.bind(interceptor),
-//   interceptor.authenticationUser.bind(interceptor),
-//   controller.update.bind(controller)
-// );
+  usersRouter.patch(
+  '/update/:id', 
+  interceptor.authorization.bind(interceptor),
+  interceptor.authenticationUser.bind(interceptor),
+  controller.update.bind(controller)
+  );

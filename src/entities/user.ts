@@ -1,3 +1,5 @@
+import { recipeStructure } from "./recipes"
+
 export type LoginUser = {
 
   email:string, 
@@ -11,7 +13,6 @@ export type UserStructure = LoginUser & {
   userName:string, 
   styleFood: string,
   descriptionUser: string,
-  // MyRecipes: recipeStructure[],
-  // Avatar: imgData,
+  myRecipes: recipeStructure[]
 
 }

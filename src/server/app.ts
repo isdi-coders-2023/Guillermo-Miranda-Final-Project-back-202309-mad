@@ -3,6 +3,7 @@ import express from 'express'
 import morgan from 'morgan';
 import createDebug from 'debug';
 import { usersRouter } from '../routers/users.router.js';
+import { recipesRouter } from '../routers/recipes.router.js';
 
 const debug = createDebug('FPB:app');
 
@@ -17,3 +18,4 @@ app.use(express.static('public'));
 
 
 app.use('/users', usersRouter); 
+app.use('/recipes', recipesRouter); 

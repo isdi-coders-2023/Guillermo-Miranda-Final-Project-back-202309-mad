@@ -16,30 +16,58 @@ describe('Given UsersController', () => {
     let mockResponse: Response;
     const mockNext = jest.fn() as NextFunction;
 
-    test('then when getAll should be call',async()=>{
+    test('then when getAllUsers should be call',async()=>{
     
       const mockRequest = {
         method: get
       } as unknown as Request;
 
       const mockRepo = {
-        getAllUsers: jest.fn().mockResolvedValue(mockRequest)
+        getAll: jest.fn().mockResolvedValue([{}] as unknown as UserStructure[])
       } as unknown as UsersMongoRepo; 
 
       mockResponse = {
-        json: jest.fn().mockReturnValue([{}])
+        json: jest.fn().mockResolvedValue([{}])
       } as unknown as Response;
 
       const controller = new UserController(mockRepo);
       await controller.getAllUsers(mockRequest,mockResponse,mockNext);
+      await mockRepo.getAll()
       expect(mockResponse.json).toHaveBeenCalled();
 
      
       const mockRepoFail = {
-        getAllUsers: jest.fn().mockRejectedValue(mockError)
+        getAll: jest.fn().mockRejectedValue(mockError)
       } as unknown as UsersMongoRepo;
       const controllerError = new UserController(mockRepoFail);
       await controllerError.getAllUsers(mockRequest,mockResponse,mockNext);
+      expect(mockNext).toHaveBeenCalledWith(mockError);
+
+    });
+
+    test('then when getById should be call',async()=>{
+
+      const mockRepo = {
+        getById: jest.fn().mockResolvedValue({})
+      } as unknown as UsersMongoRepo;
+
+      const mockRequest = {
+        params:{id:''}
+      } as unknown as Request;
+
+      mockResponse = {
+        json: jest.fn().mockResolvedValue({})
+      }as unknown as Response;
+
+      const controller = new UserController(mockRepo);
+      await controller.getById(mockRequest,mockResponse,mockNext);
+      expect(mockResponse.json).toHaveBeenCalled();
+
+      const mockRepoFail = {
+        getById: jest.fn().mockRejectedValue(mockError)
+      } as unknown as UsersMongoRepo;
+      const controllerError = new UserController(mockRepoFail);
+      await controllerError.getById(mockRequest,mockResponse,mockNext);
       expect(mockNext).toHaveBeenCalledWith(mockError);
 
     });

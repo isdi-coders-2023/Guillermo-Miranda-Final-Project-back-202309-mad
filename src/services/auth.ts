@@ -6,7 +6,7 @@ import { HttpError } from "../types/http.error.js";
 import createDebug from 'debug'
 import { TokenPayload } from "../types/token.type.js";
 
-const debug = createDebug('W7E:auth');
+const debug = createDebug('FPB:auth');
 
 debug('Imported');
 export abstract class Auth {
