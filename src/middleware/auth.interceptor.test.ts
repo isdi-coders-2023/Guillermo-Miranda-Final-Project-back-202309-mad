@@ -13,12 +13,12 @@ describe('Given the class AuthInterceptor', () => {
   describe('When it is instantiated and...', () => {
 
     test('Then, when the method authorization is called', () => {
-      const mockRequest = {
+      const mockReqAuthorization = {
         get: jest.fn().mockReturnValue('Bearer Token'),
         body: {},
       } as unknown as Request;
       Auth.verifyAndGetPayload = jest.fn().mockReturnValueOnce({ id: '1' });
-      authInterceptor.authorization(mockRequest, mockResponse, mockNext);
+      authInterceptor.authorization(mockReqAuthorization, mockResponse, mockNext);
       expect(mockNext).toHaveBeenCalled();
     });
   });
@@ -26,16 +26,16 @@ describe('Given the class AuthInterceptor', () => {
   describe('When we use authenticationRecipes method', () => {
 
     test('Then should call next when the user is the owner of the recipe', async () => {
-      const mockRequest = {
+      const mockReqAuthenticationRecipes = {
         body: {userId: 'userId'},
         params: { id: 'recipeId' }
       } as unknown as Request;
-      const mockRecipe = { chef: mockRequest.body };
+      const mockRecipe = { chef: mockReqAuthenticationRecipes.body };
       const mockRepo = { getById: jest.fn().mockResolvedValue(mockRecipe) };
 
       jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
 
-      await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
+      await authInterceptor.authenticationRecipe(mockReqAuthenticationRecipes, mockResponse, mockNext);
 
       expect(mockRepo.getById).toHaveBeenCalledWith('recipeId');
       expect(mockNext).toHaveBeenCalled();
@@ -45,16 +45,16 @@ describe('Given the class AuthInterceptor', () => {
   describe('When we use authenticationUser method', () => {
 
     test('Then should call next when the user is the owner of the recipe', async () => {
-      const mockRequest = {
+      const mockReqAuthenticationUser = {
       body: {userId: 'userId'},
       params: { id: 'sameId' }
       } as unknown as Request;
-      const mockUser =  mockRequest.body ;
+      const mockUser =  mockReqAuthenticationUser.body ;
       const mockRepo = { getById: jest.fn().mockResolvedValue(mockUser) };
 
       jest.spyOn(UsersMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
 
-      await authInterceptor.authenticationUser(mockRequest, mockResponse, mockNext);
+      await authInterceptor.authenticationUser(mockReqAuthenticationUser, mockResponse, mockNext);
 
       expect(mockRepo.getById).toHaveBeenCalledWith('sameId');
       expect(mockNext).toHaveBeenCalled();
@@ -65,29 +65,29 @@ describe('Given the class AuthInterceptor', () => {
   describe('When there are errors', () => {
 
     test('When there is no authorization', () => {
-      const mockRequest = {
+      const mockRequestFail = {
         get: jest.fn().mockReturnValue(null),
         body: {},
       } as unknown as Request;
-      authInterceptor.authorization(mockRequest, mockResponse, mockNext);
+      authInterceptor.authorization(mockRequestFail, mockResponse, mockNext);
       expect(mockNext).toHaveBeenCalled();
     });
 
     describe('When there are errors in authenticationRecipe', () => {
 
-      const mockRequest = {
+      const mockReqError = {
         body: {userId: 'userId'},
         params: { id: 'recipeId' }
       } as unknown as Request;
 
       test('When there is no authenticationRecipes', async() => {
 
-        const mockRecipe =  mockRequest.params;
+        const mockRecipe =  mockReqError.params;
         const mockRepo = { getById: jest.fn().mockResolvedValue(mockRecipe) };
 
         jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
 
-        await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
+        await authInterceptor.authenticationRecipe(mockReqError, mockResponse, mockNext);
         expect(mockRepo.getById).toHaveBeenCalledWith('recipeId');;
         expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
 
@@ -99,7 +99,7 @@ describe('Given the class AuthInterceptor', () => {
 
         jest.spyOn(RecipesMongoRepo.prototype, 'getById').mockImplementation(mockRepo.getById);
 
-        await authInterceptor.authenticationRecipe(mockRequest, mockResponse, mockNext);
+        await authInterceptor.authenticationRecipe(mockReqError, mockResponse, mockNext);
         expect(mockRepo.getById).toHaveBeenCalledWith('recipeId');
         expect(mockNext).toHaveBeenCalledWith(expect.any(HttpError));
       });
